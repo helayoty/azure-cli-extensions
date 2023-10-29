@@ -13,6 +13,11 @@ Pending
 +++++++
 * Vendor new SDK and bump API version to 2023-09-02-preview.
 
+0.5.168
++++++++
+* Add `--enable-ai-toolchain-operator` and `--disable-ai-toolchain-operator` to `az aks create` and `az aks update`.
+* Add `--enable-ai-toolchain-operator` to the `az aks create` command.
+
 0.5.167
 +++++++
 * Fix the default storagepool name value created for Azure Container Storage.

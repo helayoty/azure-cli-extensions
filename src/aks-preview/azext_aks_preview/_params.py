@@ -459,6 +459,7 @@ def load_arguments(self, _):
                    options_list=["--enable-azure-service-mesh", "--enable-asm"],
                    action='store_true',
                    is_preview=True)
+        c.argument('enable_ai_toolchain_operator', is_preview=True, action='store_true')
         c.argument('image_cleaner_interval_hours', type=int)
         c.argument('cluster_snapshot_id', validator=validate_cluster_snapshot_id, is_preview=True)
         c.argument('enable_apiserver_vnet_integration', action='store_true', is_preview=True)
@@ -633,6 +634,8 @@ def load_arguments(self, _):
         c.argument('enable_network_observability', action='store_true', is_preview=True, help="enable network observability for cluster")
         c.argument('enable_cost_analysis', is_preview=True, action='store_true')
         c.argument('disable_cost_analysis', is_preview=True, action='store_true')
+        c.argument('enable_ai_toolchain_operator', is_preview=True, action='store_true')
+        c.argument('disable_ai_toolchain_operator', is_preview=True, action='store_true')
         # azure container storage
         c.argument('enable_azure_container_storage', arg_type=get_enum_type(storage_pool_types),
                    help='enable azure container storage and define storage pool type')

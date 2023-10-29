@@ -128,6 +128,7 @@ class AKSPreviewManagedClusterModels(AKSManagedClusterModels):
 
     The api version of the class corresponding to a model is determined by resource_type.
     """
+
     def __init__(self, cmd: AzCommandsLoader, resource_type: ResourceType):
         super().__init__(cmd, resource_type)
         # holder for pod identity related models
@@ -152,11 +153,11 @@ class AKSPreviewManagedClusterModels(AKSManagedClusterModels):
 
 class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
     def __init__(
-        self,
-        cmd: AzCliCommand,
-        raw_parameters: AKSManagedClusterParamDict,
-        models: AKSPreviewManagedClusterModels,
-        decorator_mode: DecoratorMode,
+            self,
+            cmd: AzCliCommand,
+            raw_parameters: AKSManagedClusterParamDict,
+            models: AKSPreviewManagedClusterModels,
+            decorator_mode: DecoratorMode,
     ):
         super().__init__(cmd, raw_parameters, models, decorator_mode)
         # used to store external functions
@@ -197,9 +198,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         :return: None
         """
         if (
-            mc and
-            mc.network_profile and
-            safe_lower(mc.network_profile.network_plugin) == "kubenet"
+                mc and
+                mc.network_profile and
+                safe_lower(mc.network_profile.network_plugin) == "kubenet"
         ):
             if enable_pod_identity and not enable_pod_identity_with_kubenet:
                 raise RequiredArgumentMissingError(
@@ -282,10 +283,10 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         return ip_families
 
     def _get_outbound_type(
-        self,
-        enable_validation: bool = False,
-        read_only: bool = False,
-        load_balancer_profile: ManagedClusterLoadBalancerProfile = None,
+            self,
+            enable_validation: bool = False,
+            read_only: bool = False,
+            load_balancer_profile: ManagedClusterLoadBalancerProfile = None,
     ) -> Union[str, None]:
         """Internal function to dynamically obtain the value of outbound_type according to the context.
 
@@ -315,9 +316,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         read_from_mc = False
         if self.decorator_mode == DecoratorMode.CREATE:
             if (
-                self.mc and
-                self.mc.network_profile and
-                self.mc.network_profile.outbound_type is not None
+                    self.mc and
+                    self.mc.network_profile and
+                    self.mc.network_profile.outbound_type is not None
             ):
                 outbound_type = self.mc.network_profile.outbound_type
                 read_from_mc = True
@@ -328,11 +329,11 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
 
         # dynamic completion
         if (
-            self.decorator_mode == DecoratorMode.CREATE and
-            not read_from_mc and
-            outbound_type != CONST_OUTBOUND_TYPE_MANAGED_NAT_GATEWAY and
-            outbound_type != CONST_OUTBOUND_TYPE_USER_ASSIGNED_NAT_GATEWAY and
-            outbound_type != CONST_OUTBOUND_TYPE_USER_DEFINED_ROUTING
+                self.decorator_mode == DecoratorMode.CREATE and
+                not read_from_mc and
+                outbound_type != CONST_OUTBOUND_TYPE_MANAGED_NAT_GATEWAY and
+                outbound_type != CONST_OUTBOUND_TYPE_USER_ASSIGNED_NAT_GATEWAY and
+                outbound_type != CONST_OUTBOUND_TYPE_USER_DEFINED_ROUTING
         ):
             outbound_type = CONST_OUTBOUND_TYPE_LOAD_BALANCER
 
@@ -362,9 +363,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
                 if self.decorator_mode == DecoratorMode.CREATE and outbound_type == CONST_OUTBOUND_TYPE_USER_DEFINED_ROUTING:
                     if load_balancer_profile:
                         if (
-                            load_balancer_profile.managed_outbound_i_ps or
-                            load_balancer_profile.outbound_i_ps or
-                            load_balancer_profile.outbound_ip_prefixes
+                                load_balancer_profile.managed_outbound_i_ps or
+                                load_balancer_profile.outbound_i_ps or
+                                load_balancer_profile.outbound_ip_prefixes
                         ):
                             raise MutuallyExclusiveArgumentError(
                                 "userDefinedRouting doesn't support customizing \
@@ -372,9 +373,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
                             )
                     else:
                         if (
-                            self.get_load_balancer_managed_outbound_ip_count() or
-                            self.get_load_balancer_outbound_ips() or
-                            self.get_load_balancer_outbound_ip_prefixes()
+                                self.get_load_balancer_managed_outbound_ip_count() or
+                                self.get_load_balancer_outbound_ips() or
+                                self.get_load_balancer_outbound_ip_prefixes()
                         ):
                             raise MutuallyExclusiveArgumentError(
                                 "userDefinedRouting doesn't support customizing \
@@ -397,7 +398,7 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         return outbound_type
 
     def _get_pod_cidr_and_service_cidr_and_dns_service_ip_and_docker_bridge_address_and_network_policy(
-        self, enable_validation: bool = False
+            self, enable_validation: bool = False
     ) -> Tuple[
         Union[str, None],
         Union[str, None],
@@ -471,10 +472,10 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
             network_plugin = self._get_network_plugin(enable_validation=False)
             if not network_plugin:
                 if (
-                    pod_cidr or
-                    service_cidr or
-                    dns_service_ip or
-                    network_policy
+                        pod_cidr or
+                        service_cidr or
+                        dns_service_ip or
+                        network_policy
                 ):
                     raise RequiredArgumentMissingError(
                         "Please explicitly specify the network plugin type"
@@ -499,9 +500,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         network_plugin = self.raw_param.get("network_plugin")
         # try to read the property value corresponding to the parameter from the `mc` object
         if (
-            self.mc and
-            self.mc.network_profile and
-            self.mc.network_profile.network_plugin is not None
+                self.mc and
+                self.mc.network_profile and
+                self.mc.network_profile.network_plugin is not None
         ):
             network_plugin = self.mc.network_profile.network_plugin
 
@@ -527,11 +528,11 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
                         )
             else:
                 if (
-                    pod_cidr or
-                    service_cidr or
-                    dns_service_ip or
-                    docker_bridge_address or
-                    network_policy
+                        pod_cidr or
+                        service_cidr or
+                        dns_service_ip or
+                        docker_bridge_address or
+                        network_policy
                 ):
                     raise RequiredArgumentMissingError(
                         "Please explicitly specify the network plugin type"
@@ -549,9 +550,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
 
         if self.decorator_mode == DecoratorMode.CREATE:
             if (
-                self.mc and
-                self.mc.network_profile and
-                self.mc.network_profile.pod_cidr is not None
+                    self.mc and
+                    self.mc.network_profile and
+                    self.mc.network_profile.pod_cidr is not None
             ):
                 pod_cidr = self.mc.network_profile.pod_cidr
 
@@ -571,9 +572,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         # only read on CREATE as this property can be updated
         if self.decorator_mode == DecoratorMode.CREATE:
             if (
-                self.mc and
-                self.mc.network_profile and
-                self.mc.network_profile.network_plugin_mode is not None
+                    self.mc and
+                    self.mc.network_profile and
+                    self.mc.network_profile.network_plugin_mode is not None
             ):
                 network_plugin_mode = self.mc.network_profile.network_plugin_mode
 
@@ -670,9 +671,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         # In create mode, try to read the property value corresponding to the parameter from the `mc` object.
         if self.decorator_mode == DecoratorMode.CREATE:
             if (
-                self.mc and
-                self.mc.node_resource_group_profile and
-                self.mc.node_resource_group_profile.restriction_level is not None
+                    self.mc and
+                    self.mc.node_resource_group_profile and
+                    self.mc.node_resource_group_profile.restriction_level is not None
             ):
                 nrg_lockdown_restriction_level = self.mc.node_resource_group_profile.restriction_level
 
@@ -724,9 +725,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         # In create mode, try to read the property value corresponding to the parameter from the `mc` object.
         if self.decorator_mode == DecoratorMode.CREATE:
             if (
-                self.mc and
-                self.mc.auto_upgrade_profile and
-                self.mc.auto_upgrade_profile.node_os_upgrade_channel is not None
+                    self.mc and
+                    self.mc.auto_upgrade_profile and
+                    self.mc.auto_upgrade_profile.node_os_upgrade_channel is not None
             ):
                 node_os_upgrade_channel = self.mc.auto_upgrade_profile.node_os_upgrade_channel
 
@@ -772,8 +773,8 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         # In create mode, try to read the property value corresponding to the parameter from the `mc` object.
         if self.decorator_mode == DecoratorMode.CREATE:
             if (
-                self.mc and
-                self.mc.enable_pod_security_policy is not None
+                    self.mc and
+                    self.mc.enable_pod_security_policy is not None
             ):
                 enable_pod_security_policy = self.mc.enable_pod_security_policy
 
@@ -831,7 +832,7 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
 
     # pylint: disable=unused-argument
     def _get_enable_managed_identity(
-        self, enable_validation: bool = False, read_only: bool = False
+            self, enable_validation: bool = False, read_only: bool = False
     ) -> bool:
         """Internal function to obtain the value of enable_managed_identity.
 
@@ -872,9 +873,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         # In create mode, try to read the property value corresponding to the parameter from the `mc` object.
         if self.decorator_mode == DecoratorMode.CREATE:
             if (
-                self.mc and
-                self.mc.pod_identity_profile and
-                self.mc.pod_identity_profile.enabled is not None
+                    self.mc and
+                    self.mc.pod_identity_profile and
+                    self.mc.pod_identity_profile.enabled is not None
             ):
                 enable_pod_identity = self.mc.pod_identity_profile.enabled
 
@@ -968,9 +969,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         # In create mode, try to read the property value corresponding to the parameter from the `mc` object.
         if self.decorator_mode == DecoratorMode.CREATE:
             if (
-                self.mc and
-                self.mc.pod_identity_profile and
-                self.mc.pod_identity_profile.allow_network_plugin_kubenet is not None
+                    self.mc and
+                    self.mc.pod_identity_profile and
+                    self.mc.pod_identity_profile.allow_network_plugin_kubenet is not None
             ):
                 enable_pod_identity_with_kubenet = self.mc.pod_identity_profile.allow_network_plugin_kubenet
 
@@ -1066,9 +1067,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         snapshot_id = self.raw_param.get("cluster_snapshot_id")
         # try to read the property value corresponding to the parameter from the `mc` object
         if (
-            self.mc and
-            self.mc.creation_data and
-            self.mc.creation_data.source_resource_id is not None
+                self.mc and
+                self.mc.creation_data and
+                self.mc.creation_data.source_resource_id is not None
         ):
             snapshot_id = (
                 self.mc.creation_data.source_resource_id
@@ -1222,9 +1223,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         # In create mode, try to read the property value corresponding to the parameter from the `mc` object.
         if self.decorator_mode == DecoratorMode.CREATE:
             if (
-                self.mc and
-                self.mc.api_server_access_profile and
-                self.mc.api_server_access_profile.enable_vnet_integration is not None
+                    self.mc and
+                    self.mc.api_server_access_profile and
+                    self.mc.api_server_access_profile.enable_vnet_integration is not None
             ):
                 enable_apiserver_vnet_integration = self.mc.api_server_access_profile.enable_vnet_integration
 
@@ -1265,9 +1266,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         # try to read the property value corresponding to the parameter from the `mc` object
         if self.decorator_mode == DecoratorMode.CREATE:
             if (
-                self.mc and
-                self.mc.api_server_access_profile and
-                self.mc.api_server_access_profile.subnet_id is not None
+                    self.mc and
+                    self.mc.api_server_access_profile and
+                    self.mc.api_server_access_profile.subnet_id is not None
             ):
                 apiserver_subnet_id = self.mc.api_server_access_profile.subnet_id
 
@@ -1283,11 +1284,11 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
             enable_apiserver_vnet_integration = self._get_enable_apiserver_vnet_integration(
                 enable_validation=False)
             if (
-                apiserver_subnet_id and
-                (
-                    enable_apiserver_vnet_integration is None or
-                    enable_apiserver_vnet_integration is False
-                )
+                    apiserver_subnet_id and
+                    (
+                            enable_apiserver_vnet_integration is None or
+                            enable_apiserver_vnet_integration is False
+                    )
             ):
                 raise RequiredArgumentMissingError(
                     '"--apiserver-subnet-id" requires "--enable-apiserver-vnet-integration".')
@@ -1322,9 +1323,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         # In create mode, try to read the property value corresponding to the parameter from the `mc` object.
         if self.decorator_mode == DecoratorMode.CREATE:
             if (
-                self.mc and
-                self.mc.api_server_access_profile and
-                self.mc.api_server_access_profile.enable_private_cluster is not None
+                    self.mc and
+                    self.mc.api_server_access_profile and
+                    self.mc.api_server_access_profile.enable_private_cluster is not None
             ):
                 enable_private_cluster = self.mc.api_server_access_profile.enable_private_cluster
 
@@ -1335,8 +1336,8 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
             if self.decorator_mode == DecoratorMode.CREATE:
                 if enable_private_cluster:
                     if (
-                        safe_lower(self._get_load_balancer_sku(enable_validation=False)) ==
-                        CONST_LOAD_BALANCER_SKU_BASIC
+                            safe_lower(self._get_load_balancer_sku(enable_validation=False)) ==
+                            CONST_LOAD_BALANCER_SKU_BASIC
                     ):
                         raise InvalidArgumentValueError(
                             "Please use standard load balancer for private cluster"
@@ -1454,9 +1455,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         # In create mode, try to read the property value corresponding to the parameter from the `mc` object.
         if self.decorator_mode == DecoratorMode.CREATE:
             if (
-                self.mc and
-                self.mc.api_server_access_profile and
-                self.mc.api_server_access_profile.enable_private_cluster_public_fqdn is not None
+                    self.mc and
+                    self.mc.api_server_access_profile and
+                    self.mc.api_server_access_profile.enable_private_cluster_public_fqdn is not None
             ):
                 disable_public_fqdn = not self.mc.api_server_access_profile.enable_private_cluster_public_fqdn
 
@@ -1475,8 +1476,10 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
                             "Cannot specify '--enable-public-fqdn' and '--disable-public-fqdn' at the same time"
                         )
                     if (
-                        safe_lower(self._get_private_dns_zone(enable_validation=False)) == CONST_PRIVATE_DNS_ZONE_NONE or
-                        safe_lower(self.mc.api_server_access_profile.private_dns_zone) == CONST_PRIVATE_DNS_ZONE_NONE
+                            safe_lower(
+                                self._get_private_dns_zone(enable_validation=False)) == CONST_PRIVATE_DNS_ZONE_NONE or
+                            safe_lower(
+                                self.mc.api_server_access_profile.private_dns_zone) == CONST_PRIVATE_DNS_ZONE_NONE
                     ):
                         raise InvalidArgumentValueError(
                             "--disable-public-fqdn cannot be applied for none mode private dns zone cluster"
@@ -1543,9 +1546,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         # In create mode, try to read the property value corresponding to the parameter from the `mc` object.
         if self.decorator_mode == DecoratorMode.CREATE:
             if (
-                self.mc and
-                self.mc.api_server_access_profile and
-                self.mc.api_server_access_profile.private_dns_zone is not None
+                    self.mc and
+                    self.mc.api_server_access_profile and
+                    self.mc.api_server_access_profile.private_dns_zone is not None
             ):
                 private_dns_zone = self.mc.api_server_access_profile.private_dns_zone
 
@@ -1559,8 +1562,8 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
                             "Invalid private dns zone for public cluster. It should always be empty for public cluster"
                         )
                     if (
-                        private_dns_zone.lower() != CONST_PRIVATE_DNS_ZONE_SYSTEM and
-                        private_dns_zone.lower() != CONST_PRIVATE_DNS_ZONE_NONE
+                            private_dns_zone.lower() != CONST_PRIVATE_DNS_ZONE_SYSTEM and
+                            private_dns_zone.lower() != CONST_PRIVATE_DNS_ZONE_NONE
                     ):
                         if not is_valid_resource_id(private_dns_zone):
                             raise InvalidArgumentValueError(
@@ -1573,9 +1576,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
                             )
             elif self.decorator_mode == DecoratorMode.UPDATE:
                 if (
-                    self.mc and
-                    self.mc.api_server_access_profile and
-                    self.mc.api_server_access_profile.private_dns_zone == CONST_PRIVATE_DNS_ZONE_NONE
+                        self.mc and
+                        self.mc.api_server_access_profile and
+                        self.mc.api_server_access_profile.private_dns_zone == CONST_PRIVATE_DNS_ZONE_NONE
                 ):
                     if self._get_disable_public_fqdn(enable_validation=False):
                         raise InvalidArgumentValueError(
@@ -1613,9 +1616,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         if self.decorator_mode == DecoratorMode.CREATE:
             read_from_mc = False
             if (
-                self.mc and
-                self.mc.api_server_access_profile and
-                self.mc.api_server_access_profile.authorized_ip_ranges is not None
+                    self.mc and
+                    self.mc.api_server_access_profile and
+                    self.mc.api_server_access_profile.authorized_ip_ranges is not None
             ):
                 api_server_authorized_ip_ranges = (
                     self.mc.api_server_access_profile.authorized_ip_ranges
@@ -1649,8 +1652,8 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
             if self.decorator_mode == DecoratorMode.CREATE:
                 if api_server_authorized_ip_ranges:
                     if (
-                        safe_lower(self._get_load_balancer_sku(enable_validation=False)) ==
-                        CONST_LOAD_BALANCER_SKU_BASIC
+                            safe_lower(self._get_load_balancer_sku(enable_validation=False)) ==
+                            CONST_LOAD_BALANCER_SKU_BASIC
                     ):
                         raise InvalidArgumentValueError(
                             "--api-server-authorized-ip-ranges can only be used with standard load balancer"
@@ -1691,10 +1694,10 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         ]
         # try to read the property value corresponding to the parameter from the `mc` object
         if (
-            self.mc and
-            self.mc.ingress_profile and
-            self.mc.ingress_profile.web_app_routing and
-            self.mc.ingress_profile.web_app_routing.dns_zone_resource_ids is not None
+                self.mc and
+                self.mc.ingress_profile and
+                self.mc.ingress_profile.web_app_routing and
+                self.mc.ingress_profile.web_app_routing.dns_zone_resource_ids is not None
         ):
             dns_zone_resource_ids = self.mc.ingress_profile.web_app_routing.dns_zone_resource_ids
 
@@ -1722,9 +1725,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         # In create mode, try to read the property value corresponding to the parameter from the `mc` object.
         if self.decorator_mode == DecoratorMode.CREATE:
             if (
-                self.mc and
-                self.mc.workload_auto_scaler_profile and
-                self.mc.workload_auto_scaler_profile.keda
+                    self.mc and
+                    self.mc.workload_auto_scaler_profile and
+                    self.mc.workload_auto_scaler_profile.keda
             ):
                 enable_keda = self.mc.workload_auto_scaler_profile.keda.enabled
 
@@ -1831,13 +1834,14 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         """
         # Read the original value passed by the command.
         # TODO: should remove get value from enable_azuremonitormetrics once the option is removed
-        enable_azure_monitor_metrics = self.raw_param.get("enable_azure_monitor_metrics") or self.raw_param.get("enable_azuremonitormetrics")
+        enable_azure_monitor_metrics = self.raw_param.get("enable_azure_monitor_metrics") or self.raw_param.get(
+            "enable_azuremonitormetrics")
         # In create mode, try to read the property value corresponding to the parameter from the `mc` object.
         if self.decorator_mode == DecoratorMode.CREATE:
             if (
-                self.mc and
-                self.mc.azure_monitor_profile and
-                self.mc.azure_monitor_profile.metrics
+                    self.mc and
+                    self.mc.azure_monitor_profile and
+                    self.mc.azure_monitor_profile.metrics
             ):
                 enable_azure_monitor_metrics = self.mc.azure_monitor_profile.metrics.enabled
         # This parameter does not need dynamic completion.
@@ -1868,9 +1872,11 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         """
         # Read the original value passed by the command.
         # TODO: should remove get value from disable_azuremonitormetrics once the option is removed
-        disable_azure_monitor_metrics = self.raw_param.get("disable_azure_monitor_metrics") or self.raw_param.get("disable_azuremonitormetrics")
+        disable_azure_monitor_metrics = self.raw_param.get("disable_azure_monitor_metrics") or self.raw_param.get(
+            "disable_azuremonitormetrics")
         if disable_azure_monitor_metrics and self._get_enable_azure_monitor_metrics(False):
-            raise MutuallyExclusiveArgumentError("Cannot specify --enable-azuremonitormetrics and --disable-azuremonitormetrics at the same time.")
+            raise MutuallyExclusiveArgumentError(
+                "Cannot specify --enable-azuremonitormetrics and --disable-azuremonitormetrics at the same time.")
         return disable_azure_monitor_metrics
 
     def get_disable_azure_monitor_metrics(self) -> bool:
@@ -2172,15 +2178,20 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
 
         if any([key_vault_id, ca_cert_object_name, ca_key_object_name, root_cert_object_name, cert_chain_object_name]):
             if key_vault_id is None:
-                raise InvalidArgumentValueError('--key-vault-id is required to use Azure Service Mesh plugin CA feature.')
+                raise InvalidArgumentValueError(
+                    '--key-vault-id is required to use Azure Service Mesh plugin CA feature.')
             if ca_cert_object_name is None:
-                raise InvalidArgumentValueError('--ca-cert-object-name is required to use Azure Service Mesh plugin CA feature.')
+                raise InvalidArgumentValueError(
+                    '--ca-cert-object-name is required to use Azure Service Mesh plugin CA feature.')
             if ca_key_object_name is None:
-                raise InvalidArgumentValueError('--ca-key-object-name is required to use Azure Service Mesh plugin CA feature.')
+                raise InvalidArgumentValueError(
+                    '--ca-key-object-name is required to use Azure Service Mesh plugin CA feature.')
             if root_cert_object_name is None:
-                raise InvalidArgumentValueError('--root-cert-object-name is required to use Azure Service Mesh plugin CA feature.')
+                raise InvalidArgumentValueError(
+                    '--root-cert-object-name is required to use Azure Service Mesh plugin CA feature.')
             if cert_chain_object_name is None:
-                raise InvalidArgumentValueError('--cert-chain-object-name is required to use Azure Service Mesh plugin CA feature.')
+                raise InvalidArgumentValueError(
+                    '--cert-chain-object-name is required to use Azure Service Mesh plugin CA feature.')
 
         if key_vault_id is not None and (
                 not is_valid_resource_id(key_vault_id) or "providers/Microsoft.KeyVault/vaults" not in key_vault_id):
@@ -2188,7 +2199,8 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
                 key_vault_id + " is not a valid Azure Keyvault resource ID."
             )
 
-        if enable_asm and all([key_vault_id, ca_cert_object_name, ca_key_object_name, root_cert_object_name, cert_chain_object_name]):
+        if enable_asm and all(
+                [key_vault_id, ca_cert_object_name, ca_key_object_name, root_cert_object_name, cert_chain_object_name]):
             if new_profile.istio.certificate_authority is None:
                 new_profile.istio.certificate_authority = self.models.IstioCertificateAuthority()
             if new_profile.istio.certificate_authority.plugin is None:
@@ -2268,9 +2280,9 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         # In create mode, try to read the property value corresponding to the parameter from the `mc` object.
         if self.decorator_mode == DecoratorMode.CREATE:
             if (
-                self.mc and
-                self.mc.sku and
-                self.mc.sku.tier is not None
+                    self.mc and
+                    self.mc.sku and
+                    self.mc.sku.tier is not None
             ):
                 uptime_sla = self.mc.sku.tier == "Standard"
         # this parameter does not need dynamic completion
@@ -2401,10 +2413,36 @@ class AKSPreviewManagedClusterContext(AKSManagedClusterContext):
         # because it's already checked in _get_enable_cost_analysis
         return self.raw_param.get("disable_cost_analysis")
 
+    def get_ai_toolchain_operator(self) -> Union[bool, None]:
+        """Obtain the value of ai_toolchain_operator.
+         When enabled, if both enable_ai_toolchain_operator and disable_ai_toolchain_operator are
+        specified, raise a MutuallyExclusiveArgumentError.
+
+        :return: bool or None
+        """
+        # this parameter does not need dynamic completion
+        # validation is done with param validator
+        enable_ai_toolchain = self.raw_param.get("enable_ai_toolchain_operator")
+        disable_ai_toolchain = self.raw_param.get("disable_ai_toolchain_operator")
+
+        if enable_ai_toolchain is False and disable_ai_toolchain is False:
+            return None
+
+        if enable_ai_toolchain and disable_ai_toolchain:
+            raise MutuallyExclusiveArgumentError(
+                "Cannot specify --enable-ai-toolchain-operator and "
+                "--disable-ai-toolchain-operator at the same time. "
+            )
+        if enable_ai_toolchain is not None:
+            return enable_ai_toolchain
+        if disable_ai_toolchain is not None:
+            return not disable_ai_toolchain
+        return None
+
 
 class AKSPreviewManagedClusterCreateDecorator(AKSManagedClusterCreateDecorator):
     def __init__(
-        self, cmd: AzCliCommand, client: ContainerServiceClient, raw_parameters: Dict, resource_type: ResourceType
+            self, cmd: AzCliCommand, client: ContainerServiceClient, raw_parameters: Dict, resource_type: ResourceType
     ):
         self.__raw_parameters = raw_parameters
         super().__init__(cmd, client, raw_parameters, resource_type)
@@ -2704,7 +2742,8 @@ class AKSPreviewManagedClusterCreateDecorator(AKSManagedClusterCreateDecorator):
             if mc.workload_auto_scaler_profile is None:
                 mc.workload_auto_scaler_profile = self.models.ManagedClusterWorkloadAutoScalerProfile()
             if mc.workload_auto_scaler_profile.vertical_pod_autoscaler is None:
-                mc.workload_auto_scaler_profile.vertical_pod_autoscaler = self.models.ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler(enabled=True)
+                mc.workload_auto_scaler_profile.vertical_pod_autoscaler = self.models.ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler(
+                    enabled=True)
             else:
                 mc.workload_auto_scaler_profile.vertical_pod_autoscaler.enabled = True
         return mc
@@ -2733,7 +2772,8 @@ class AKSPreviewManagedClusterCreateDecorator(AKSManagedClusterCreateDecorator):
         node_resource_group_profile = None
         nrg_lockdown_restriction_level = self.context.get_nrg_lockdown_restriction_level()
         if nrg_lockdown_restriction_level:
-            node_resource_group_profile = self.models.ManagedClusterNodeResourceGroupProfile(restriction_level=nrg_lockdown_restriction_level)
+            node_resource_group_profile = self.models.ManagedClusterNodeResourceGroupProfile(
+                restriction_level=nrg_lockdown_restriction_level)
         mc.node_resource_group_profile = node_resource_group_profile
         return mc
 
@@ -2753,7 +2793,8 @@ class AKSPreviewManagedClusterCreateDecorator(AKSManagedClusterCreateDecorator):
             if mc.azure_monitor_profile is None:
                 mc.azure_monitor_profile = self.models.ManagedClusterAzureMonitorProfile()
             mc.azure_monitor_profile.metrics = self.models.ManagedClusterAzureMonitorProfileMetrics(enabled=False)
-            mc.azure_monitor_profile.metrics.kube_state_metrics = self.models.ManagedClusterAzureMonitorProfileKubeStateMetrics(  # pylint:disable=line-too-long
+            mc.azure_monitor_profile.metrics.kube_state_metrics = self.models.ManagedClusterAzureMonitorProfileKubeStateMetrics(
+                # pylint:disable=line-too-long
                 metric_labels_allowlist=str(ksm_metric_labels_allow_list),
                 metric_annotations_allow_list=str(ksm_metric_annotations_allow_list))
             self.context.set_intermediate("azuremonitormetrics_addon_enabled", True, overwrite_exists=True)
@@ -2887,6 +2928,19 @@ class AKSPreviewManagedClusterCreateDecorator(AKSManagedClusterCreateDecorator):
         mc.support_plan = support_plan
         return mc
 
+    def set_up_ai_toolchain_operator_profile(self, mc: ManagedCluster) -> ManagedCluster:
+        self._ensure_mc(mc)
+
+        if self.context.get_ai_toolchain_operator() is not None:
+            if mc.ai_toolchain_operator_profile is None:
+                mc.ai_toolchain_operator_profile = self.models.ManagedClusterAIToolchainOperatorProfile()
+
+            # set enabled
+            mc.ai_toolchain_operator_profile.enabled = True
+
+        # Default is disabled so no need to worry about that here
+        return mc
+
     def set_up_cost_analysis(self, mc: ManagedCluster) -> ManagedCluster:
         self._ensure_mc(mc)
 
@@ -2957,9 +3011,10 @@ class AKSPreviewManagedClusterCreateDecorator(AKSManagedClusterCreateDecorator):
         mc = self.set_up_azure_monitor_profile(mc)
         # set up metrics profile
         mc = self.set_up_metrics_profile(mc)
+        # set up AI toolchain operator
+        mc = self.set_up_ai_toolchain_operator_profile(mc)
         # set up for azure container storage
         mc = self.set_up_azure_container_storage(mc)
-
         # DO NOT MOVE: keep this at the bottom, restore defaults
         mc = self._restore_defaults_in_mc(mc)
         return mc
@@ -2982,16 +3037,17 @@ class AKSPreviewManagedClusterCreateDecorator(AKSManagedClusterCreateDecorator):
         need_grant_vnet_permission_to_cluster_identity = self.context.get_intermediate(
             "need_post_creation_vnet_permission_granting", default_value=False
         )
-        enable_azure_container_storage = self.context.get_intermediate("enable_azure_container_storage", default_value=False)
+        enable_azure_container_storage = self.context.get_intermediate("enable_azure_container_storage",
+                                                                       default_value=False)
 
         if (
-            monitoring_addon_enabled or
-            ingress_appgw_addon_enabled or
-            virtual_node_addon_enabled or
-            azuremonitormetrics_addon_enabled or
-            (enable_managed_identity and attach_acr) or
-            need_grant_vnet_permission_to_cluster_identity or
-            enable_azure_container_storage
+                monitoring_addon_enabled or
+                ingress_appgw_addon_enabled or
+                virtual_node_addon_enabled or
+                azuremonitormetrics_addon_enabled or
+                (enable_managed_identity and attach_acr) or
+                need_grant_vnet_permission_to_cluster_identity or
+                enable_azure_container_storage
         ):
             return True
         return False
@@ -3012,11 +3068,11 @@ class AKSPreviewManagedClusterCreateDecorator(AKSManagedClusterCreateDecorator):
             # reduce latency for the role assignment take effect
             instant_cluster = self.client.get(self.context.get_resource_group_name(), self.context.get_name())
             if not self.context.external_functions.add_role_assignment(
-                self.cmd,
-                "Network Contributor",
-                instant_cluster.identity.principal_id,
-                scope=self.context.get_vnet_subnet_id(),
-                is_service_principal=False,
+                    self.cmd,
+                    "Network Contributor",
+                    instant_cluster.identity.principal_id,
+                    scope=self.context.get_vnet_subnet_id(),
+                    is_service_principal=False,
             ):
                 logger.warning(
                     "Could not create a role assignment for subnet. Are you an Owner on this subscription?"
@@ -3171,7 +3227,7 @@ class AKSPreviewManagedClusterCreateDecorator(AKSManagedClusterCreateDecorator):
 
 class AKSPreviewManagedClusterUpdateDecorator(AKSManagedClusterUpdateDecorator):
     def __init__(
-        self, cmd: AzCliCommand, client: ContainerServiceClient, raw_parameters: Dict, resource_type: ResourceType
+            self, cmd: AzCliCommand, client: ContainerServiceClient, raw_parameters: Dict, resource_type: ResourceType
     ):
         self.__raw_parameters = raw_parameters
         super().__init__(cmd, client, raw_parameters, resource_type)
@@ -3395,7 +3451,8 @@ class AKSPreviewManagedClusterUpdateDecorator(AKSManagedClusterUpdateDecorator):
 
             # set intermediate
             self.context.set_intermediate("disable_azure_container_storage", True, overwrite_exists=True)
-            self.context.set_intermediate("pre_uninstall_validate_azure_container_storage", pre_uninstall_validate, overwrite_exists=True)
+            self.context.set_intermediate("pre_uninstall_validate_azure_container_storage", pre_uninstall_validate,
+                                          overwrite_exists=True)
 
         return mc
 
@@ -3484,8 +3541,8 @@ class AKSPreviewManagedClusterUpdateDecorator(AKSManagedClusterUpdateDecorator):
 
         # keep api_server_access_profile empty if none of its properties are updated
         if (
-            profile_holder != mc.api_server_access_profile and
-            profile_holder == self.models.ManagedClusterAPIServerAccessProfile()
+                profile_holder != mc.api_server_access_profile and
+                profile_holder == self.models.ManagedClusterAPIServerAccessProfile()
         ):
             profile_holder = None
         mc.api_server_access_profile = profile_holder
@@ -3636,7 +3693,8 @@ class AKSPreviewManagedClusterUpdateDecorator(AKSManagedClusterUpdateDecorator):
         if self.context.get_disable_keda():
             if mc.workload_auto_scaler_profile is None:
                 mc.workload_auto_scaler_profile = self.models.ManagedClusterWorkloadAutoScalerProfile()
-            mc.workload_auto_scaler_profile.keda = self.models.ManagedClusterWorkloadAutoScalerProfileKeda(enabled=False)
+            mc.workload_auto_scaler_profile.keda = self.models.ManagedClusterWorkloadAutoScalerProfileKeda(
+                enabled=False)
 
         return mc
 
@@ -3687,10 +3745,10 @@ class AKSPreviewManagedClusterUpdateDecorator(AKSManagedClusterUpdateDecorator):
         # TODO: should remove get value from enable_azuremonitormetrics once the option is removed
         # TODO: should remove get value from disable_azuremonitormetrics once the option is removed
         if (
-            self.context.raw_param.get("enable_azure_monitor_metrics") or
-            self.context.raw_param.get("enable_azuremonitormetrics") or
-            self.context.raw_param.get("disable_azure_monitor_metrics") or
-            self.context.raw_param.get("disable_azuremonitormetrics")
+                self.context.raw_param.get("enable_azure_monitor_metrics") or
+                self.context.raw_param.get("enable_azuremonitormetrics") or
+                self.context.raw_param.get("disable_azure_monitor_metrics") or
+                self.context.raw_param.get("disable_azuremonitormetrics")
         ):
             ensure_azure_monitor_profile_prerequisites(
                 self.cmd,
@@ -3942,6 +4000,21 @@ class AKSPreviewManagedClusterUpdateDecorator(AKSManagedClusterUpdateDecorator):
                 agent_profile.node_taints = nodepool_taints
         return mc
 
+    def update_ai_toolchain_operator_profile(self, mc: ManagedCluster) -> ManagedCluster:
+        """Updates the aiToolchainOperatorProfile field of the managed cluster
+
+        :return: the ManagedCluster object
+        """
+        self._ensure_mc(mc)
+
+        if self.context.get_ai_toolchain_operator() is not None:
+            if mc.ai_toolchain_operator_profile is None:
+                mc.ai_toolchain_operator_profile = self.models.ManagedClusterAIToolchainOperatorProfile()
+
+            mc.ai_toolchain_operator_profile.enabled = self.context.get_ai_toolchain_operator()
+
+        return mc
+
     def update_cost_analysis(self, mc: ManagedCluster) -> ManagedCluster:
         self._ensure_mc(mc)
 
@@ -4035,6 +4108,8 @@ class AKSPreviewManagedClusterUpdateDecorator(AKSManagedClusterUpdateDecorator):
         mc = self.update_k8s_support_plan(mc)
         # update metrics profile
         mc = self.update_metrics_profile(mc)
+        # update AI toolchain operator
+        mc = self.update_ai_toolchain_operator_profile(mc)
         # update azure container storage
         mc = self.update_azure_container_storage(mc)
 
@@ -4047,8 +4122,10 @@ class AKSPreviewManagedClusterUpdateDecorator(AKSManagedClusterUpdateDecorator):
         """
         postprocessing_required = super().check_is_postprocessing_required(mc)
         if not postprocessing_required:
-            enable_azure_container_storage = self.context.get_intermediate("enable_azure_container_storage", default_value=False)
-            disable_azure_container_storage = self.context.get_intermediate("disable_azure_container_storage", default_value=False)
+            enable_azure_container_storage = self.context.get_intermediate("enable_azure_container_storage",
+                                                                           default_value=False)
+            disable_azure_container_storage = self.context.get_intermediate("disable_azure_container_storage",
+                                                                            default_value=False)
 
             if (enable_azure_container_storage or disable_azure_container_storage):
                 return True

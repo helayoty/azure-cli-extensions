@@ -573,6 +573,9 @@ helps['aks create'] = """
         - name: --enable-cost-analysis
           type: bool
           short-summary: Enable exporting Kubernetes Namespace and Deployment details to the Cost Analysis views in the Azure portal. For more information see aka.ms/aks/docs/cost-analysis.
+        - name: --enable-ai-toolchain-operator
+          type: bool
+          short-summary: Enable AI toolchain operator.
     examples:
         - name: Create a Kubernetes cluster with an existing SSH public key.
           text: az aks create -g MyResourceGroup -n MyManagedCluster --ssh-key-value /path/to/publickey
@@ -1087,6 +1090,12 @@ helps['aks update'] = """
         - name: --disable-cost-analysis
           type: bool
           short-summary: Disable exporting Kubernetes Namespace and Deployment details to the Cost Analysis views in the Azure portal.
+        - name: --enable-ai-toolchain-operator
+          type: bool
+          short-summary: Enable AI toolchain operator.
+        - name: --disable-ai-toolchain-operator
+          type: bool
+          short-summary: Disable AI toolchain operator.
     examples:
       - name: Reconcile the cluster back to its current state.
         text: az aks update -g MyResourceGroup -n MyManagedCluster

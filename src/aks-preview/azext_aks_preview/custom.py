@@ -574,6 +574,8 @@ def aks_create(
     enable_cilium_dataplane=False,
     custom_ca_trust_certificates=None,
     enable_network_observability=None,
+    # AI toolchain operator
+    enable_ai_toolchain_operator=False,
     # nodepool
     crg_id=None,
     message_of_the_day=None,
@@ -772,6 +774,9 @@ def aks_update(
     guardrails_version=None,
     guardrails_excluded_ns=None,
     enable_network_observability=None,
+    # AI toolchain operator
+    enable_ai_toolchain_operator=False,
+    disable_ai_toolchain_operator=False,
     # metrics profile
     enable_cost_analysis=False,
     disable_cost_analysis=False,
